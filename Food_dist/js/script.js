@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
 
   // Tabs
+
   const tabs = document.querySelectorAll('.tabheader__item');
         tabsContent = document.querySelectorAll('.tabcontent');
         tabsParent = document.querySelector('.tabheader__items');
@@ -43,9 +44,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-
-  
   // Timer
+
   const deadline = '2022-12-31';
 
   function getTimeRemaining(endtime) {
@@ -99,4 +99,44 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   setClock('.timer', deadline);
+
+  // Modal
+
+  const btnsContactUs = document.querySelectorAll('[data-modal]'),
+        modal = document.querySelector('.modal'),
+        btnCloseModal = document.querySelector('[data-close]');
+
+
+  btnsContactUs.forEach(btn => {
+    btn.addEventListener('click', showModal);
+  });
+
+  // close modal window by clicking on close button
+  btnCloseModal.addEventListener('click', closeModal);
+
+  // close modal window by clicking on area behind the dialog
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  // close modal window by clicking on escape button
+  document.addEventListener('keydown', (event) => {
+    if (event.code === "Escape" && modal.classList.contains('show')) {
+      closeModal();
+    }
+  });
+
+  function showModal() {
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+  };
+
+  function closeModal() {
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  };
 });
