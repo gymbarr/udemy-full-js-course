@@ -3,8 +3,8 @@ window.addEventListener('DOMContentLoaded', () => {
   // Tabs
 
   const tabs = document.querySelectorAll('.tabheader__item');
-        tabsContent = document.querySelectorAll('.tabcontent');
-        tabsParent = document.querySelector('.tabheader__items');
+  tabsContent = document.querySelectorAll('.tabcontent');
+  tabsParent = document.querySelector('.tabheader__items');
 
   // hide all tabs with food style
   function hideTabContent() {
@@ -50,10 +50,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function getTimeRemaining(endtime) {
     const t = Date.parse(endtime) - Date.parse(new Date()),
-          days = Math.floor(t / (1000 * 60 * 60 * 24));
-          hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-          minutes = Math.floor((t / (1000 * 60)) % 60);
-          seconds = Math.floor((t / (1000)) % 60);
+      days = Math.floor(t / (1000 * 60 * 60 * 24));
+    hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    minutes = Math.floor((t / (1000 * 60)) % 60);
+    seconds = Math.floor((t / (1000)) % 60);
 
     return {
       total: t,
@@ -75,12 +75,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function setClock(selector, endtime) {
     const timer = document.querySelector(selector),
-          days = timer.querySelector('#days'),
-          hours = timer.querySelector('#hours'),
-          minutes = timer.querySelector('#minutes'),
-          seconds = timer.querySelector('#seconds'),
-          timeInterval = setInterval(updateClock, 1000);
-    
+      days = timer.querySelector('#days'),
+      hours = timer.querySelector('#hours'),
+      minutes = timer.querySelector('#minutes'),
+      seconds = timer.querySelector('#seconds'),
+      timeInterval = setInterval(updateClock, 1000);
+
     // update clock at once to prevent displaying there old data
     updateClock();
 
@@ -103,9 +103,9 @@ window.addEventListener('DOMContentLoaded', () => {
   // Modal
 
   const btnsContactUs = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        btnCloseModal = document.querySelector('[data-close]'),
-        modalTimerId = setTimeout(openModal, 10000);
+    modal = document.querySelector('.modal'),
+    btnCloseModal = document.querySelector('[data-close]'),
+    modalTimerId = setTimeout(openModal, 10000);
 
 
   btnsContactUs.forEach(btn => {
@@ -151,4 +151,66 @@ window.addEventListener('DOMContentLoaded', () => {
       window.removeEventListener('scroll', showModalByScroll);
     }
   };
+
+  // Menu card
+
+  class MenuCard {
+    constructor(imgSrc, imgAlt, subtitle, descr, price, parentSelector) {
+      this.imgSrc = imgSrc;
+      this.imgAlt = imgAlt;
+      this.subtitle = subtitle;
+      this.descr = descr;
+      this.price = price;
+      this.parent = document.querySelector(parentSelector);
+      this.transfer = 27;
+      this.changeToUAH();
+    }
+
+    changeToUAH() {
+      this.price *= this.transfer;
+    }
+
+    render() {
+      const cardHTML = `
+            <div class="menu__item">
+              <img src=${this.imgSrc} alt=${this.imgAlt}>
+              <h3 class="menu__item-subtitle">${this.subtitle}</h3>
+              <div class="menu__item-descr">${this.descr}</div>
+              <div class="menu__item-divider"></div>
+              <div class="menu__item-price">
+                <div class="menu__item-cost">Цена:</div>
+                <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+              </div>
+            </div>
+            `;
+
+      this.parent.insertAdjacentHTML('beforeend', cardHTML);
+    }
+  };
+
+  new MenuCard(
+    'img/tabs/vegy.jpg',
+    'vegy', 'Меню "Фитнес"',
+    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+    9,
+    '.menu .container'
+  ).render();
+
+  new MenuCard(
+    'img/tabs/elite.jpg',
+    'elite',
+    'Меню “Премиум”',
+    'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+    25,
+    '.menu .container'
+  ).render();
+
+  new MenuCard(
+    'img/tabs/post.jpg',
+    'post',
+    'Меню "Постное"',
+    'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+    18,
+    '.menu .container'
+  ).render();
 });
