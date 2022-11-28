@@ -104,12 +104,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const btnsContactUs = document.querySelectorAll('[data-modal]'),
         modal = document.querySelector('.modal'),
-        btnCloseModal = document.querySelector('[data-close]');
+        btnCloseModal = document.querySelector('[data-close]'),
+        modalTimerId = setTimeout(openModal, 10000);
 
 
   btnsContactUs.forEach(btn => {
-    btn.addEventListener('click', showModal);
+    btn.addEventListener('click', openModal);
   });
+
+  // open modal window when a user scrolled the page to the bottom
+  window.addEventListener('scroll', showModalByScroll);
 
   // close modal window by clicking on close button
   btnCloseModal.addEventListener('click', closeModal);
@@ -128,15 +132,23 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  function showModal() {
+  function openModal() {
     modal.classList.add('show');
     modal.classList.remove('hide');
     document.body.style.overflow = 'hidden';
+    clearInterval(modalTimerId);
   };
 
   function closeModal() {
     modal.classList.add('hide');
     modal.classList.remove('show');
     document.body.style.overflow = '';
+  };
+
+  function showModalByScroll() {
+    if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+      openModal();
+      window.removeEventListener('scroll', showModalByScroll);
+    }
   };
 });
