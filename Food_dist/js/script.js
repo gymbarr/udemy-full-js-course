@@ -384,4 +384,82 @@ window.addEventListener('DOMContentLoaded', () => {
     // set slide number in counter
     sliderCurrent.textContent = getZero(slideCurrent);
   };
+
+  // Calculator
+
+  const gender = document.querySelector('#gender'),
+        activity = document.querySelector('.calculating__choose_big'),
+        constitution = document.querySelector('.calculating__choose_medium'),
+        result = document.querySelector('.calculating__result span');
+  let height, weight, age,
+      sex = 'female',
+      ratio = 1.375;
+
+  getStaticInfo(gender, 'calculating__choose-item_active');
+  getStaticInfo(activity, 'calculating__choose-item_active');
+  getDynamicInfo(constitution);
+
+  calcTotal();
+
+  // common function for getting info about gender and activity
+  function getStaticInfo(parentElement, activeClass) {
+    const elements = parentElement.querySelectorAll('div');
+
+    elements.forEach(elem => {
+      elem.addEventListener('click', (event) => {
+        // set values depending on info type
+        if (event.target.getAttribute('data-ratio')) {
+          ratio = +event.target.getAttribute('data-ratio');
+        } else {
+          sex = event.target.getAttribute('id');
+        }
+
+        // switch activity class
+        elements.forEach(elem => elem.classList.remove(activeClass));
+        event.target.classList.add(activeClass);
+
+        // recalculate calories result
+        calcTotal();
+      });
+    });
+  };
+
+  // getting info about constitution
+  function getDynamicInfo(parentElement) {
+    const inputs = parentElement.querySelectorAll('input');
+
+    inputs.forEach(input => {
+      input.addEventListener('input', (event) => {
+        // set values depending on input element
+        switch (event.target.getAttribute('id')) {
+          case 'height':
+            height = +input.value;
+            break;
+          case 'weight':
+            weight = +input.value;
+            break;
+          case 'age':
+            age = +input.value;
+            break;
+        }
+
+        calcTotal();
+      });
+    });
+  };
+
+  function calcTotal() {
+    // all parameter have to be filed to calculate calories
+    if (!sex || !height || !weight || !age || !ratio) {
+      result.textContent = 0;
+      return;
+    }
+
+    // calculating formulas differ depending on sex
+    if (sex === 'male') {
+      result.textContent = Math.round((88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio);
+    } else {
+      result.textContent = Math.round((447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio);
+    }
+  };
 });
