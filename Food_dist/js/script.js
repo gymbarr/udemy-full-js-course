@@ -306,7 +306,7 @@ window.addEventListener('DOMContentLoaded', () => {
         sliderNext = document.querySelector('.offer__slider-next'),
         slidesWrapper = document.querySelector('.offer__slider-wrapper'),
         slidesField = document.querySelector('.offer__slider-inner'),
-        slideWidth = window.getComputedStyle(slidesWrapper).width,
+        slideWidth = +window.getComputedStyle(slidesWrapper).width.match(/(\d|\.)/g).join(""),
         slidesCount = slides.length;
 
   // setting slides field
@@ -319,7 +319,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // set equal width to all slides
   slides.forEach(slide => {
-    slide.style.width = slideWidth;
+    slide.style.width = slideWidth + 'px';
   });
 
   slider.style.position = 'relative';
@@ -379,7 +379,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // set slider position for current slide
-    sliderOffset += +slideWidth.slice(0, slideWidth.length - 2) * (slideCurrent - 1) - sliderOffset;
+    sliderOffset += slideWidth * (slideCurrent - 1) - sliderOffset;
     slidesField.style.transform = `translateX(-${sliderOffset}px)`;
     // set slide number in counter
     sliderCurrent.textContent = getZero(slideCurrent);
