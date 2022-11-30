@@ -299,6 +299,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let slideCurrent = 1,
       sliderOffset = 0;
   const slides = document.querySelectorAll('.offer__slide'),
+        slider = document.querySelector('.offer__slider'),
         sliderTotal = document.querySelector('#total'),
         sliderCurrent = document.querySelector('#current'),
         sliderPrev = document.querySelector('.offer__slider-prev'),
@@ -321,43 +322,66 @@ window.addEventListener('DOMContentLoaded', () => {
     slide.style.width = slideWidth;
   });
 
-  // initialize slides counter on the page
+  slider.style.position = 'relative';
+
+  // create carousel indicators and add it to the dom tree
+  const indicators = document.createElement('ol');
+  indicators.classList.add('carousel-indicators');
+  slider.append(indicators);
+
+  // create and add to the dom tree dots for carousel
+  for (let i = 0; i < slidesCount; i++) {
+    const dot = document.createElement('li');
+    dot.setAttribute('data-slide-to', i + 1);
+    dot.classList.add('dot');
+    indicators.append(dot);
+  }
+
+  const dots = slider.querySelectorAll('.dot');
+
+  // add events to all the dots
+  dots.forEach(dot => {
+    const slideTo = dot.getAttribute('data-slide-to');
+    dot.addEventListener('click', function() { showSlide(slideTo) });
+  });
+
+  // initialize slide and slides counter
+  showSlide(slideCurrent);
   sliderTotal.textContent = getZero(slidesCount);
-  sliderCurrent.textContent = getZero(slideCurrent);
 
+  // show previous slide on click by the previous slide button
   sliderPrev.addEventListener('click', () => {
-    if (sliderOffset === 0) {
-      sliderOffset = +slideWidth.slice(0, slideWidth.length - 2) * (slidesCount - 1);
-    } else {
-      sliderOffset -= +slideWidth.slice(0, slideWidth.length - 2);
-    }
+    showSlide(--slideCurrent);
+  });
 
-    slidesField.style.transform = `translateX(-${sliderOffset}px)`;
+  // show next slide on click by the next slide button
+  sliderNext.addEventListener('click', () => {
+    showSlide(++slideCurrent);
+  });
 
-    if (slideCurrent <= 1) {
+  function showSlide(slideNum) {
+    // check limit values of slider
+    if (slideNum > slidesCount) {
+      slideCurrent = 1;
+    } else if (slideNum < 1) {
       slideCurrent = slidesCount;
     } else {
-      slideCurrent--;
+      slideCurrent = slideNum;
     }
 
-    sliderCurrent.textContent = getZero(slideCurrent);
-  });
+    // switch active dot
+    dots.forEach(dot => {
+      if (dot.getAttribute('data-slide-to') == slideCurrent) {
+        dot.classList.add('dot-active');
+      } else {
+        dot.classList.remove('dot-active');
+      }
+    });
 
-  sliderNext.addEventListener('click', () => {
-    if (sliderOffset === +slideWidth.slice(0, slideWidth.length - 2) * (slidesCount - 1)) {
-      sliderOffset = 0;
-    } else {
-      sliderOffset += +slideWidth.slice(0, slideWidth.length - 2);
-    }
-
+    // set slider position for current slide
+    sliderOffset += +slideWidth.slice(0, slideWidth.length - 2) * (slideCurrent - 1) - sliderOffset;
     slidesField.style.transform = `translateX(-${sliderOffset}px)`;
-
-    if (slideCurrent >= slidesCount) {
-      slideCurrent = 1;
-    } else {
-      slideCurrent++;
-    }
-
+    // set slide number in counter
     sliderCurrent.textContent = getZero(slideCurrent);
-  });
+  };
 });
