@@ -391,9 +391,27 @@ window.addEventListener('DOMContentLoaded', () => {
         activity = document.querySelector('.calculating__choose_big'),
         constitution = document.querySelector('.calculating__choose_medium'),
         result = document.querySelector('.calculating__result span');
-  let height, weight, age,
-      sex = 'female',
-      ratio = 1.375;
+  let sex, height, weight, age, ratio;
+
+  // get initial data from local storage if they are
+  if (localStorage.getItem('sex')) {
+    sex = localStorage.getItem('sex');
+  } else {
+    // set default data otherwise
+    sex = 'female';
+    localStorage.setItem('sex', 'female');
+  }
+
+  if (localStorage.getItem('ratio')) {
+    ratio = localStorage.getItem('ratio');
+  } else {
+    ratio = 1.375;
+    localStorage.setItem('ratio', 1.375);
+  }
+
+  // set default data to local storage
+  initLocalSettings(gender, 'calculating__choose-item_active');
+  initLocalSettings(activity, 'calculating__choose-item_active');
 
   getStaticInfo(gender, 'calculating__choose-item_active');
   getStaticInfo(activity, 'calculating__choose-item_active');
@@ -410,8 +428,11 @@ window.addEventListener('DOMContentLoaded', () => {
         // set values depending on info type
         if (event.target.getAttribute('data-ratio')) {
           ratio = +event.target.getAttribute('data-ratio');
+          // save data to local storage
+          localStorage.setItem('ratio', ratio);
         } else {
           sex = event.target.getAttribute('id');
+          localStorage.setItem('sex', sex);
         }
 
         // switch activity class
@@ -430,6 +451,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     inputs.forEach(input => {
       input.addEventListener('input', (event) => {
+        // checking that input values contain only numbers
+        if (input.value.match(/\D/g)) {
+          input.style.border = '2px solid red';
+        } else {
+          input.style.border = 'none';
+        }
+
         // set values depending on input element
         switch (event.target.getAttribute('id')) {
           case 'height':
@@ -447,6 +475,20 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
   };
+
+  function initLocalSettings(parentElement, activeClass) {
+    const elements = parentElement.querySelectorAll('div');
+
+    elements.forEach(elem => {
+      elem.classList.remove(activeClass);
+      if (elem.getAttribute('id') === localStorage.getItem('sex')) {
+        elem.classList.add(activeClass);
+      }
+      if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
+        elem.classList.add(activeClass);
+      }
+    })
+  }
 
   function calcTotal() {
     // all parameter have to be filed to calculate calories
