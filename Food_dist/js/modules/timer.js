@@ -1,7 +1,7 @@
-function timer() {
-  // Timer
+import {getZero} from '../services/services';
 
-  const deadline = '2022-12-31';
+function timer(id, deadline) {
+  // Timer
 
   function getTimeRemaining(endtime) {
     const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -16,15 +16,6 @@ function timer() {
       hours: hours,
       minutes: minutes,
       seconds: seconds
-    }
-  };
-
-  // adds zero sign to element of the timer if needed
-  function getZero(num) {
-    if (num >= 0 && num < 10) {
-      return `0${num}`;
-    } else {
-      return num;
     }
   };
 
@@ -53,7 +44,7 @@ function timer() {
     };
   };
 
-  setClock('.timer', deadline);
+  setClock(id, deadline);
 };
 
 export default timer;

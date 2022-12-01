@@ -1,3 +1,5 @@
+import {getResource} from '../services/services';
+
 function cards() {
   // Menu card
 
@@ -35,31 +37,21 @@ function cards() {
     }
   };
 
-  const getResource = async url => {
-    const res = await fetch(url);
-
-    if (!res.ok ) {
-      throw new Error(`Could not fetch ${url}, status: ${res.status}`)
-    }
-
-    return await res.json();
-  };
-
   // getting data from server using fetch method
-  // getResource('http://localhost:3000/menu')
-  //   .then(data => {
-  //     data.forEach(({img, altimg, title, descr, price}) => {
-  //       new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-  //     });
-  //   });
-
-  // getting data from server using axios library
-  axios.get('http://localhost:3000/menu')
+  getResource('http://localhost:3000/menu')
     .then(data => {
-      data.data.forEach(({img, altimg, title, descr, price}) => {
+      data.forEach(({img, altimg, title, descr, price}) => {
         new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
       });
     });
+
+  // getting data from server using axios library
+  // axios.get('http://localhost:3000/menu')
+  //   .then(data => {
+  //     data.data.forEach(({img, altimg, title, descr, price}) => {
+  //       new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+  //     });
+  //   });
 };
 
 export default cards;
