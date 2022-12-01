@@ -1,12 +1,17 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./Food_dist/js/modules/calculator.js":
 /*!********************************************!*\
   !*** ./Food_dist/js/modules/calculator.js ***!
   \********************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 function calculator() {
   // Calculator
 
@@ -129,7 +134,7 @@ function calculator() {
   };
 };
 
-module.exports = calculator;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (calculator);
 
 /***/ }),
 
@@ -137,8 +142,12 @@ module.exports = calculator;
 /*!***************************************!*\
   !*** ./Food_dist/js/modules/cards.js ***!
   \***************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 function cards() {
   // Menu card
 
@@ -203,7 +212,7 @@ function cards() {
     });
 };
 
-module.exports = cards;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cards);
 
 /***/ }),
 
@@ -211,12 +220,19 @@ module.exports = cards;
 /*!***************************************!*\
   !*** ./Food_dist/js/modules/forms.js ***!
   \***************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-function forms() {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./Food_dist/js/modules/modal.js");
+
+
+function forms(modalTimerId) {
   // Forms
-
-  const forms = this.document.querySelectorAll('form');
+  // const forms = this.document.querySelectorAll('form');
+  const forms = document.querySelectorAll('form');
 
   const message = {
     loading: 'img/form/spinner.svg',
@@ -275,7 +291,7 @@ function forms() {
     const prevModalDialog = document.querySelector('.modal__dialog');
 
     prevModalDialog.classList.add('hide');
-    openModal();
+    (0,_modal__WEBPACK_IMPORTED_MODULE_0__.openModal)('.modal', modalTimerId);
 
     const thanksModal = document.createElement('div');
     thanksModal.classList.add('modal__dialog');
@@ -291,12 +307,12 @@ function forms() {
       thanksModal.remove();
       prevModalDialog.classList.add('show');
       prevModalDialog.classList.remove('hide');
-      closeModal();
+      (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModal)('.modal');
     }, 4000);
   };
 };
 
-module.exports = forms;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (forms);
 
 /***/ }),
 
@@ -304,62 +320,76 @@ module.exports = forms;
 /*!***************************************!*\
   !*** ./Food_dist/js/modules/modal.js ***!
   \***************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-function modal() {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "closeModal": () => (/* binding */ closeModal),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "openModal": () => (/* binding */ openModal)
+/* harmony export */ });
+function openModal(modalSelector, modalTimerId) {
+  const modal = document.querySelector(modalSelector);
+
+  modal.classList.add('show');
+  modal.classList.remove('hide');
+  document.body.style.overflow = 'hidden';
+
+  if (modalTimerId) {
+    clearInterval(modalTimerId);
+  }
+};
+
+function closeModal(modalSelector) {
+  const modal = document.querySelector(modalSelector);
+
+  modal.classList.add('hide');
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+};
+
+function modal(triggerSelector, modalSelector, modalTimerId) {
   // Modal
 
-  const btnsContactUs = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        btnCloseModal = document.querySelector('[data-close]'),
-        modalTimerId = setTimeout(openModal, 10000);
+  const btnsContactUs = document.querySelectorAll(triggerSelector),
+        modal = document.querySelector(modalSelector),
+        btnCloseModal = document.querySelector('[data-close]');
 
   btnsContactUs.forEach(btn => {
-    btn.addEventListener('click', openModal);
+    btn.addEventListener('click', () => openModal(modalSelector, modalTimerId));
   });
 
   // open modal window when a user scrolled the page to the bottom
   window.addEventListener('scroll', showModalByScroll);
 
   // close modal window by clicking on close button
-  btnCloseModal.addEventListener('click', closeModal);
+  btnCloseModal.addEventListener('click', () => closeModal(modalSelector));
 
   // close modal window by clicking on area behind the dialog
   modal.addEventListener('click', (event) => {
     if (event.target === modal || event.target.getAttribute('data-close') == "") {
-      closeModal();
+      closeModal(modalSelector);
     }
   });
 
   // close modal window by clicking on escape button
   document.addEventListener('keydown', (event) => {
     if (event.code === "Escape" && modal.classList.contains('show')) {
-      closeModal();
+      closeModal(modalSelector);
     }
   });
 
-  function openModal() {
-    modal.classList.add('show');
-    modal.classList.remove('hide');
-    document.body.style.overflow = 'hidden';
-    clearInterval(modalTimerId);
-  };
-
-  function closeModal() {
-    modal.classList.add('hide');
-    modal.classList.remove('show');
-    document.body.style.overflow = '';
-  };
-
   function showModalByScroll() {
     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-      openModal();
+      openModal(modalSelector, modalTimerId);
       window.removeEventListener('scroll', showModalByScroll);
     }
   };
 };
 
-module.exports = modal;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modal);
+
+
 
 /***/ }),
 
@@ -367,8 +397,12 @@ module.exports = modal;
 /*!****************************************!*\
   !*** ./Food_dist/js/modules/slider.js ***!
   \****************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 function slider() {
   // Slider
 
@@ -462,7 +496,7 @@ function slider() {
   };
 };
 
-module.exports = slider;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (slider);
 
 /***/ }),
 
@@ -470,8 +504,12 @@ module.exports = slider;
 /*!**************************************!*\
   !*** ./Food_dist/js/modules/tabs.js ***!
   \**************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 function tabs() {
   // Tabs
 
@@ -517,7 +555,7 @@ function tabs() {
   });
 };
 
-module.exports = tabs;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (tabs);
 
 /***/ }),
 
@@ -525,8 +563,12 @@ module.exports = tabs;
 /*!***************************************!*\
   !*** ./Food_dist/js/modules/timer.js ***!
   \***************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 function timer() {
   // Timer
 
@@ -585,7 +627,7 @@ function timer() {
   setClock('.timer', deadline);
 };
 
-module.exports = timer;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (timer);
 
 /***/ })
 
@@ -616,28 +658,68 @@ module.exports = timer;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 /*!********************************!*\
   !*** ./Food_dist/js/script.js ***!
   \********************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modules_calculator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/calculator */ "./Food_dist/js/modules/calculator.js");
+/* harmony import */ var _modules_cards__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/cards */ "./Food_dist/js/modules/cards.js");
+/* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/forms */ "./Food_dist/js/modules/forms.js");
+/* harmony import */ var _modules_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/modal */ "./Food_dist/js/modules/modal.js");
+/* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/slider */ "./Food_dist/js/modules/slider.js");
+/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/tabs */ "./Food_dist/js/modules/tabs.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/timer */ "./Food_dist/js/modules/timer.js");
+
+
+
+
+
+
+
+
+
 window.addEventListener('DOMContentLoaded', () => {
-  const calculator = __webpack_require__(/*! ./modules/calculator */ "./Food_dist/js/modules/calculator.js"),
-        cards = __webpack_require__(/*! ./modules/cards */ "./Food_dist/js/modules/cards.js"),
-        forms = __webpack_require__(/*! ./modules/forms */ "./Food_dist/js/modules/forms.js"),
-        modal = __webpack_require__(/*! ./modules/modal */ "./Food_dist/js/modules/modal.js"),
-        slider = __webpack_require__(/*! ./modules/slider */ "./Food_dist/js/modules/slider.js"),
-        tabs = __webpack_require__(/*! ./modules/tabs */ "./Food_dist/js/modules/tabs.js"),
-        timer = __webpack_require__(/*! ./modules/timer */ "./Food_dist/js/modules/timer.js");
-   
-  tabs();
-  modal();
-  timer();
-  cards();
-  calculator();
-  forms();
-  slider();
+  const modalTimerId = setTimeout(() => (0,_modules_modal__WEBPACK_IMPORTED_MODULE_3__.openModal)('.modal', modalTimerId), 10000);
+
+  (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_5__["default"])();
+  (0,_modules_modal__WEBPACK_IMPORTED_MODULE_3__["default"])('[data-modal]', '.modal', modalTimerId);
+  (0,_modules_timer__WEBPACK_IMPORTED_MODULE_6__["default"])();
+  (0,_modules_cards__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  (0,_modules_calculator__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  (0,_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(modalTimerId);
+  (0,_modules_slider__WEBPACK_IMPORTED_MODULE_4__["default"])();
 });
 
 })();
